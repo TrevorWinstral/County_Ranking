@@ -229,14 +229,17 @@ bottom = """
 
 styles=[hover(),]
 for region in Regions:
-    print(region)
-    Regions[region] = Regions[region].dropna(subset=['New Cases in Last 14 Days']).astype({"COVID-Free Days": int, "New Cases in Last 14 Days": int})
-    fix_new_cases = lambda x : max(x, 0)
-    Regions[region]['New Cases in Last 14 Days'] = Regions[region]['New Cases in Last 14 Days'].map(fix_new_cases)
-    temp = Regions[region].sort_values(by=['New Cases in Last 14 Days', 'COVID-Free Days'], ascending=[True, False])
-    #temp = Regions[region].sort_values(by=['COVID-Free Days', 'New Cases in Last 14 Days'], ascending=[False, True])
-    s = temp.style.apply(highlighter, axis = 1).set_table_styles(styles).hide_index()
-    
-    with open(f'{region.replace(" ", "_")}.html', 'w') as out:
-        content = top + s.render() + bottom
-        out.write(content)
+    try:
+        print(region)
+        Regions[region] = Regions[region].dropna(subset=['New Cases in Last 14 Days']).astype({"COVID-Free Days": int, "New Cases in Last 14 Days": int})
+        fix_new_cases = lambda x : max(x, 0)
+        Regions[region]['New Cases in Last 14 Days'] = Regions[region]['New Cases in Last 14 Days'].map(fix_new_cases)
+        temp = Regions[region].sort_values(by=['New Cases in Last 14 Days', 'COVID-Free Days'], ascending=[True, False])
+        #temp = Regions[region].sort_values(by=['COVID-Free Days', 'New Cases in Last 14 Days'], ascending=[False, True])
+        s = temp.style.apply(highlighter, axis = 1).set_table_styles(styles).hide_index()
+        
+        with open(f'{region.replace(" ", "_")}.html', 'w') as out:
+            content = top + s.render() + bottom
+            out.write(content)
+    except Exception as e:
+        print(f'Error:\n{e}')
