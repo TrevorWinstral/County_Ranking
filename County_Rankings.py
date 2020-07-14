@@ -232,11 +232,18 @@ styles=[hover(),]
 for region in Regions:
     try:
         print(region)
+        #Fix NaN and sort
         Regions[region] = Regions[region].dropna(subset=['New Cases in Last 14 Days']).astype({"COVID-Free Days": int, "New Cases in Last 14 Days": int})
         fix_new_cases = lambda x : max(x, 0)
         Regions[region]['New Cases in Last 14 Days'] = Regions[region]['New Cases in Last 14 Days'].map(fix_new_cases)
         temp = Regions[region].sort_values(by=['New Cases in Last 14 Days', 'COVID-Free Days'], ascending=[True, False])
         #temp = Regions[region].sort_values(by=['COVID-Free Days', 'New Cases in Last 14 Days'], ascending=[False, True])
+        
+        #Add rank
+        temp['Rank'] = temp.reset_index().index
+        temp['Rank'] = temp['Rank'].add(1)
+        temp = temp[['Rank', 'County', 'COVID-Free Days', 'New Cases in Last 14 Days']]
+        
         s = temp.style.apply(highlighter, axis = 1).set_table_styles(styles).hide_index()
         
         with open(f'{region.replace(" ", "_")}.html', 'w') as out:
