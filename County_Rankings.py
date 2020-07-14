@@ -111,8 +111,9 @@ for fip in fips:
         continue
         
     print(f'Working on {county}, {state}')
-    frame.loc[:,'New']=frame.loc[:,'Cases'].diff()    
-    frame['New']=np.where(frame.New == np.NaN, frame.New, frame.Cases)
+    frame.loc[:,'New']=frame.loc[:,'Cases'].diff()   
+    frame['New'] = frame['New'].fillna(1.0) 
+    #frame['New']=np.where(frame.New == np.NaN, frame.New, frame.Cases)
     frame.loc[:,'Total New Cases in Last 14 Days']=frame.loc[:,'New'].rolling(14, min_periods=1).sum()
     
     #Calculate Streak
