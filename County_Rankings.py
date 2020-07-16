@@ -8,7 +8,10 @@ df = pd.read_csv('https://raw.githubusercontent.com/nytimes/covid-19-data/master
 df.columns = ['Date', 'County', 'State', 'Fips', 'Cases', 'Deaths']
 df = df.sort_values(by=['State', 'County'])
 print(df.tail())
-
+# assigning Fips to New York City, NY, Kansas City, MO and Joplin, MO
+df.loc[df['County'] == 'New York City', 'Fips'] = 999
+df.loc[df['County'] == 'Kansas City', 'Fips'] = 998
+df.loc[df['County'] == 'Joplin', 'Fips'] = 997
 
 fips = df['Fips'].unique()
 
