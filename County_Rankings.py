@@ -18,7 +18,7 @@ ne_data = {'New England':['Maine', 'New Hampshire', 'Vermont', 'Massachusetts', 
 ma_data = {'Middle Atlantic':['New York', 'New Jersey','Pennsylvania']}
 en_data = {'East North Central':['Ohio', 'Michigan', 'Indiana', 'Wisconsin', 'Illinois']}
 wn_data = {'West North Central':['Minnesota', 'Iowa', 'Missouri', 'North Dakota', 'South Dakota', 'Nebraska', 'Kansas']}
-sa_data = {'South Atlantic':['Delaware', 'Maryland', 'West Virginia', 'Virginia', 'North Carolina', 'South Carolina', 'Georgia', 'Florida', 'Puerto Rico', 'District of Columbia']}
+sa_data = {'South Atlantic':['Delaware', 'Maryland', 'West Virginia', 'Virginia', 'North Carolina', 'South Carolina', 'Georgia', 'Florida', 'Puerto Rico', 'District of Columbia', 'Virgin Islands', 'Northern Mariana Islands']}
 es_data = {'East South Central':['Kentucky', 'Tennessee', 'Alabama', 'Mississippi']}
 ws_data = {'West South Central':['Arkansas', 'Louisiana', 'Oklahoma', 'Texas']}
 mo_data = {'Mountain':['Montana', 'Idaho', 'Wyoming', 'Colorado', 'New Mexico', 'Arizona', 'Utah', 'Nevada']}
@@ -98,6 +98,7 @@ abbrev = {
         'WV': 'West Virginia',
         'WY': 'Wyoming'
 }
+
 in_abbrev = {v: k for k, v in abbrev.items()}
 
 
