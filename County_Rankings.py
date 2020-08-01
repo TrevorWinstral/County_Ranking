@@ -252,9 +252,6 @@ bottom = """
 """
 
 
-# In[20]:
-
-
 styles=[hover(),]
 for region in Regions:
     arrow = lambda x : ' &#x2197;' if x>0 else (' &#x2192' if x ==0  else ' &#x2198')
