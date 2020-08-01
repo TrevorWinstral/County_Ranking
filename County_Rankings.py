@@ -275,7 +275,7 @@ for region in Regions:
         
         s = temp.style.apply(highlighter, axis = 1).set_table_styles(styles).hide_index()
 
-        with open(f'{region.replace(' ', '_')}.html', 'w') as out:
+        with open(f'{region.replace(" ", "_")}.html', 'w') as out:
             content = top + s.render() + bottom
             out.write(content)
     except Exception as e:
