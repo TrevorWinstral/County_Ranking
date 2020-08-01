@@ -257,30 +257,29 @@ bottom = """
 
 styles=[hover(),]
 for region in Regions:
+    arrow = lambda x : ' &#x2197;' if x>0 else (' &#x2192' if x ==0  else ' &#x2198')
     try:
-        arrow = lambda x : ' &#x2197;' if x>0 else (' &#x2192' if x ==0  else ' &#x2198')
-        for region in Regions:
-            print(region)
-            #Fix NaN and sort
-            Regions[region] = Regions[region].dropna(subset=['New Cases in Last 14 Days']).astype({"COVID-Free Days": int, "New Cases in Last 14 Days": int, "Last 7 Days": int, 'Pct Change': float})
+        print(region)
+        #Fix NaN and sort
+        Regions[region] = Regions[region].dropna(subset=['New Cases in Last 14 Days']).astype({"COVID-Free Days": int, "New Cases in Last 14 Days": int, "Last 7 Days": int, 'Pct Change': float})
 
-            Regions[region]['Trend'] = Regions[region]['Pct Change'].map(arrow)
-            #Regions[region]['Pct Change'] = Regions[region]['Pct Change'].map('{:,.2f}%'.format) 
-            Regions[region]['Percent Change'] = Regions[region]['Pct Change'].map('{:,.2f}%'.format) + Regions[region]['Trend']
+        Regions[region]['Trend'] = Regions[region]['Pct Change'].map(arrow)
+        #Regions[region]['Pct Change'] = Regions[region]['Pct Change'].map('{:,.2f}%'.format) 
+        Regions[region]['Percent Change'] = Regions[region]['Pct Change'].map('{:,.2f}%'.format) + Regions[region]['Trend']
 
-            Regions[region]['New Cases in Last 14 Days'] = Regions[region]['New Cases in Last 14 Days'].map(fix_new_cases)
-            temp = Regions[region].sort_values(by=['New Cases in Last 14 Days', 'COVID-Free Days'], ascending=[True, False])
-            #temp = Regions[region].sort_values(by=['COVID-Free Days', 'New Cases in Last 14 Days'], ascending=[False, True])
-            
-            #Add rank
-            temp['Rank'] = temp.reset_index().index
-            temp['Rank'] = temp['Rank'].add(1)
-            temp = temp[['Rank', 'County', 'COVID-Free Days', 'New Cases in Last 14 Days', 'Last 7 Days', 'Percent Change']]
-            
-            s = temp.style.apply(highlighter, axis = 1).set_table_styles(styles).hide_index()
+        Regions[region]['New Cases in Last 14 Days'] = Regions[region]['New Cases in Last 14 Days'].map(fix_new_cases)
+        temp = Regions[region].sort_values(by=['New Cases in Last 14 Days', 'COVID-Free Days'], ascending=[True, False])
+        #temp = Regions[region].sort_values(by=['COVID-Free Days', 'New Cases in Last 14 Days'], ascending=[False, True])
+        
+        #Add rank
+        temp['Rank'] = temp.reset_index().index
+        temp['Rank'] = temp['Rank'].add(1)
+        temp = temp[['Rank', 'County', 'COVID-Free Days', 'New Cases in Last 14 Days', 'Last 7 Days', 'Percent Change']]
+        
+        s = temp.style.apply(highlighter, axis = 1).set_table_styles(styles).hide_index()
 
-            with open(f'{region}.html', 'w') as out:
-                content = top + s.render() + bottom
-                out.write(content)
+        with open(f'{region.replace(' ', '_')}.html', 'w') as out:
+            content = top + s.render() + bottom
+            out.write(content)
     except Exception as e:
         print(f'Error:\n{e}')
