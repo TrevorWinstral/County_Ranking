@@ -116,10 +116,14 @@ for fip in fips:
         continue
         
     print(f'Working on {county}, {state}')
+    # Get New cases, fix NaN, and then set negative days to 0
     frame.loc[:,'New']=frame.loc[:,'Cases'].diff()   
     frame['New'] = frame['New'].fillna('X') 
     indices = np.where(frame['New']=='X')
     frame.loc[indices[0],'New'] = frame.loc[indices[0], 'Cases']
+    frame['New'] = frame['New'].map(fix_new_cases)
+    frame.loc[:,'Total New Cases in Last 14 Days']=frame.loc[:,'New'].rolling(14, min_periods=1).sum()
+    frame['Total New Cases in Last 14 Days'] = frame['Total New Cases in Last 14 Days'].map(fix_new_cases)
     
     frame.loc[:,'Total New Cases in Last 14 Days']=frame.loc[:,'New'].rolling(14, min_periods=1).sum()
 
