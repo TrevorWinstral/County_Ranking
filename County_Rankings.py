@@ -129,10 +129,14 @@ for fip in fips:
 
     #Percent Change
     frame['Last7'] = frame['New'].rolling(7, min_periods=1).sum().map(fix_new_cases)
+    # Set Last 14 days entries to last 7 days if latter is larger
+    frame.loc[(frame['Last7'] > frame['Total New Cases in Last 14 Days']), 'Total New Cases in Last 14 Days'] = frame.loc[(frame['Last7'] > frame['Total New Cases in Last 14 Days']), 'Last7']
     frame['Previous7'] = frame['Last7'].shift(7).fillna(0.0).map(fix_new_cases)
+    # Set previous 7 days to zero if last7 and last 14 are zero
+    frame.loc[(frame['Last7'] == 0) & (frame['Total New Cases in Last 14 Days'] == 0), 'Previous7'] = 0
     frame['PercentChange'] = 100*(frame['Last7'] - frame['Previous7'])/(frame['Last7']+frame['Previous7'])
     frame['PercentChange'] = frame['PercentChange'].fillna(0.0)
-    
+
     #Calculate Streak
     fd = frame.copy().reset_index().drop(['Total New Cases in Last 14 Days', 'State', 'Deaths', 'Date'], axis=1)
 
@@ -142,10 +146,6 @@ for fip in fips:
     fd['Free_Streak'] = fd['s'].map(checker)
     fd = fd.drop(['sign', 's'], axis=1)
     frame['Free Streak']=fd['Free_Streak']
-
-    # Set Last 14 days entries to last 7 days if latter is larger
-    frame.loc[(frame['Last7'] > frame['Total New Cases in Last 14 Days']), 'Total New Cases in Last 14 Days'] = frame.loc[(frame['Last7'] > frame['Total New Cases in Last 14 Days']), 'Last7']
-
     frame = frame.drop(['index'], axis=1)[['Date', 'State', 'County', 'Cases', 'New', 'Total New Cases in Last 14 Days', 'Free Streak', 'Deaths', 'Last7', 'PercentChange']]
     
     
