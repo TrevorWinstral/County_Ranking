@@ -205,19 +205,6 @@ top = """
 <meta content="utf-8" http-equiv="encoding">
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-function colorize() {
-var NW = String.fromCharCode(8599);
-var SW = String.fromCharCode(8600);
-$('td').each(function() {
-    $(this).html($(this).html().
-    replace(SW, '<span style="color: green">'+ SW +'</span>').
-    replace(NW, '<span style="color: red">'+ NW +'</span>'))
-    ;
-});
-};
-</script>
 <style>
 
     h2 {
@@ -262,7 +249,7 @@ bottom = """
 
 styles=[hover(),]
 for region in Regions:
-    arrow = lambda x : ' &#x2197;' if x>0 else (' &#x2192' if x ==0  else ' &#x2198')
+    arrow = lambda x : ' &#x2197;' if x>0 else (' &#x2192' if x ==0  else ' &#x2198') # set arrow direction, ...97 is up, 92 straight, 98 down
     try:
         print(region)
         #Fix NaN and sort
@@ -284,7 +271,9 @@ for region in Regions:
         s = temp.style.apply(highlighter, axis = 1).set_table_styles(styles).hide_index()
 
         with open(f'{region.replace(" ", "_")}.html', 'w') as out:
-            content = top + s.render() + bottom
+            body = s.render().replace('&#x2197;','<span style="color: red"> &#x2197;</span>') # red arrow up
+            body = body.replace('&#x2198','<span style="color: green"> &#x2198;</span>') # green arrow down
+            content = top + body + bottom
             out.write(content)
     except Exception as e:
         print(f'Error:\n{e}')
