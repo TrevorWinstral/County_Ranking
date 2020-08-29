@@ -239,7 +239,7 @@ top = """
 
 </style>
 </head>
-<body onload=colorize()>
+<body>
 """
 bottom = """
 </body>
