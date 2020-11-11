@@ -180,17 +180,21 @@ def highlighter(s):
     r=''
     try:
         if val_1>=14: #More than 14 Covid free days
-            r = 'background-color: #018001; color: #ffffff;'
+            r = 'background-color: #24773B; color: #ffffff;'
         elif 20>=val_2 : # less than 20 in last 2 weeks
-            r = 'background-color: #02be02; color: #ffffff;'
-        elif 200>=val_2 >=21: #Light green
-            r = 'background-color: #ffff01;'
-        elif 1000>=val_2 >= 201: #Yellow
-            r = 'background-color: #ffa501;'
-        elif 20000>=val_2 >= 1001: #Orange
-            r = 'background-color: #ff3434;'
-        elif val_2 > 20001: # Red
-            r = 'background-color: #990033;'
+            r = 'background-color: #89c540;' 
+        elif 200>=val_2 >=21: #Yellow
+            r = 'background-color: #f9cc3d;'
+        elif 1000>=val_2 >= 201: #Orange
+            r = 'background-color: #f8961d;'
+        elif 20000>=val_2 >= 1001: #Light Red
+            r = 'background-color: #ef3d23;'
+        elif 200000>=val_2 > 20001: # Red
+            r = 'background-color: #B11F24;'
+        elif 1000000>=val_2 > 200001: # Light Purple
+            r = 'background-color: #652369;'
+        elif val_2 > 1000000: # Purple
+            r = 'background-color: #36124B; color: #ffffff;'
     except Exception as e:
         r = 'background-color: white'
     return [r]*(len(s)-2) + ['']*2
